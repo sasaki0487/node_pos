@@ -4,10 +4,15 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
 var authController = require('./controllers/auth.controller');
+var productController = require('./controllers/product.controller');
 
 var app = express('');
-mongoose.connect('mongodb://127.0.0.1:27017/app');
 
+mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+app.set('view engine', 'ejs');
 app.use(session({
 	secret: 'secret:D',
 	resave: true,
@@ -17,12 +22,15 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 
+
 app.post('/auth', authController.auth);
+app.post('/search', productController.search);
+app.post('/register', productController.register);
 app.get('/', (req,res) => {
 	if (req.session.loggedin) {
-		res.send('Welcome back, ' + req.session.username + '!');
+		res.render('main')
 	} else {
-		res.render('index.ejs');
+		res.render('login');
 	}
 	res.end();
 });
