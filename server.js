@@ -26,11 +26,22 @@ app.use(bodyParser.json());
 app.post('/auth', authController.auth);
 app.post('/search', productController.search);
 app.post('/register', productController.register);
+app.get('/search', (req,res) =>{
+	res.render('search');
+});
+app.get('/login', (req,res) => {
+	if(req.session.loggedin) {
+		res.redirect('/');
+	}
+	else{
+		res.render('login');
+	}
+});
 app.get('/', (req,res) => {
 	if (req.session.loggedin) {
 		res.render('main')
 	} else {
-		res.render('login');
+		res.redirect('/login');
 	}
 	res.end();
 });

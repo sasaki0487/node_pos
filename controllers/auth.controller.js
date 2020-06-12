@@ -4,6 +4,7 @@ exports.auth = function(req,res){
 	var user = req.body.username;
 	var pass = req.body.password;
 	if(user && pass){
+
 		Account.count({'username': user,'password': pass},(err, count) => {
 			if(err){
 				res.send('DB access error!');

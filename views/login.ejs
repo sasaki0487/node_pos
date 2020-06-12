@@ -34,15 +34,32 @@
 			color: #ffffff;
 		}
 		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	</head>
 	<body>
 		<div class="login-form">
-			<h1>Login Form</h1>
-			<form action="auth" method="POST">
-				<input type="text" name="username" placeholder="Username" required>
-				<input type="password" name="password" placeholder="Password" required>
-				<input type="submit">
-			</form>
+			<h1>Login</h1>
+			<input type="text" name="username" placeholder="Username" required>
+			<input type="password" name="password" placeholder="Password" required>
+			<input type="submit">
 		</div>
+		<script>
+			$("input[type=submit]").click(function(){
+		        $.ajax({
+		          url: "/auth",
+		          type: "POST",
+		          data: {
+		              username: $("input[type=text]").val(),
+		              password: $("input[type=password]").val()
+		          },
+		          success: function(data){    //    alert后台返回的参数
+		          },
+		          error: function(){
+		            alert('Wrong ID or Password!');
+		          }
+		      });
+		    });
+		</script>
 	</body>
+	
 </html>

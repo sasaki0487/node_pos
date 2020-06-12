@@ -3,16 +3,16 @@ const Product = require('../models/product.model');
 exports.search = function(req,res){
 	var id = req.body.productID;
 	if(id){
-		Product.find((err,ids) => {
+		Product.find({'id':id},(err,data) => {
 			if(err){
 				console.log(err);
+				res.end();
 			}
 			else{
-				res.render('main',{products:ids});
+				res.render('searchResult',{product:data});
 			}
 		});
 	}
-	//res.end();
 }
 
 exports.register = function(req,res){
