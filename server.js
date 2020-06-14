@@ -26,6 +26,7 @@ app.use(bodyParser.json());
 app.post('/auth', authController.auth);
 app.post('/search', productController.search);
 app.post('/register', productController.register);
+app.post('/update', productController.update)
 app.get('/search', (req,res) =>{
 	res.render('search');
 });

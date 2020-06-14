@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-<h1>Search Result</h1>
-<table>
-    <tr>
-        <th>ID</th>
-        <td><%= product[0].id %></td>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <td><%= product[0].name %></td>
-    </tr>
-    <tr>
-        <th>Stock</th>
-        <td><%= product[0].stock %></td>
-    </tr>
-    <tr>
-        <th>In price</th>
-        <td><%= product[0].inPrice %></td>
-    </tr>
-    <tr>
-        <th>Out price</th>
-        <td><%= product[0].outPrice %></td>
-    </tr>
-</table>
+  <h1>Search Result</h1>
+  <table>
+      <tr>
+          <th>ID</th>
+          <td id="id"><%= product[0].id %></td>
+      </tr>
+      <tr>
+          <th>Name</th>
+          <td><input type="text" id="name" name="name" value = <%= product[0].name %>></td>
+      </tr>
+      <tr>
+          <th>Stock</th>
+          <td><input type="text" id="stock" name="stock" value = <%= product[0].stock %>></td>
+      </tr>
+      <tr>
+          <th>In price</th>
+          <td><input type="text" id="inPrice" name="inPrice" value = <%= product[0].inPrice %>></td>
+      </tr>
+      <tr>
+          <th>Out price</th>
+          <td><input type="text" id="outPrice" name="outPrice" value = <%= product[0].outPrice %>></td>
+      </tr>
+  </table>
+  <button type="button" id="update">Update</button>
+  <button type="button" id="delete">Delete</button>
+  <script>
+    $("#update").click(function(){
+      $.post("update",{
+        id: $("#id").html(),
+        name: $("#name").val(),
+        stock: $("#stock").val(),
+        inPrice: $("#inPrice").val(),
+        outPrice: $("#outPrice").val()
+      },
+      function(data,status){
+        alert(data);
+      })
+    });
+  </script>
 </body>
 </html>
