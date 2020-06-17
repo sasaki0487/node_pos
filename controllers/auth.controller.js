@@ -4,18 +4,17 @@ exports.auth = function(req,res){
 	var user = req.body.username;
 	var pass = req.body.password;
 	if(user && pass){
-
 		Account.count({'username': user,'password': pass},(err, count) => {
 			if(err){
-				res.send('DB access error!');
+				return res.send('401');
 			}
 			else if(count == 1){
 				req.session.loggedin = true;
 				req.session.username = user;
-				res.redirect('/');
+				return res.send('200');
 			}
 			else{
-				res.send('Wrong username or password!');
+				return res.send('400');
 			}
 			res.end();
 		});

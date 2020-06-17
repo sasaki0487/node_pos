@@ -8,8 +8,12 @@ exports.search = function(req,res){
 				console.log(err);
 				res.end();
 			}
-			else{
+			else if(data.length){
 				res.render('searchResult',{product:data});
+			}
+			else{
+				res.send("ID not found!");
+				res.end();
 			}
 		});
 	}
