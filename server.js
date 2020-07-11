@@ -22,11 +22,14 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 
-
 app.post('/auth', authController.auth);
 app.post('/search', productController.search);
 app.post('/register', productController.register);
-app.post('/update', productController.update)
+app.post('/getRegisterId', productController.getRegisterId);
+app.post('/update', productController.update); 
+app.get('/register', (req,res) =>{
+	res.render('register');
+});
 app.get('/search', (req,res) =>{
 	res.render('search');
 });

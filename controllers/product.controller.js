@@ -20,7 +20,28 @@ exports.search = function(req,res){
 }
 
 exports.register = function(req,res){
-	res.end();
+	var id = req.body.id;
+	var name = req.body.name;
+	var stock = req.body.stock;
+	var inPrice = req.body.inPrice;
+	var outPrice = req.body.outPrice;
+	Product.create(
+	{
+		'id':id,
+		'name':name,
+		'stock':stock,
+		'inPrice':inPrice,
+		'outPrice':outPrice
+	},
+	(err,doc) => {
+		if(err){
+			console.log(err);
+			return res.status(500).send({error:err});
+		}
+		else{
+			return res.status(200).send('Registered.');
+		}
+	});
 }
 
 exports.update = function(req,res){
@@ -45,8 +66,26 @@ exports.update = function(req,res){
 				return res.send(500,{error:err});
 			}
 			else{
-				return res.send('Updated.');
+				return res.status(200).send('Updated.');
 			}
 		});
 	}
+}
+
+exports.getRegisterId = function(req,res){
+	Product.find({},{'id':1,'_id':0}).sort({'id':1}).exec((err,data)=>{
+		if(err){
+			console.log(err);
+			return res.status(500).send({error:err});
+		}
+		else{
+			for(idx = 1 ; idx <= data.length ; ++idx){
+				if(data[idx-1].id != idx){
+					break;
+				}
+			}
+			return res.status(200).send({ID:idx});
+		}
+
+	});
 }

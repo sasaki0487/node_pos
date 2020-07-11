@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <h1>Register</h1>
+  <table>
+      <tr>
+          <th>ID</th>
+          <td id="id"></td>
+      </tr>
+      <tr>
+          <th>Name</th>
+          <td><input type="text" id="name" name="name"></td>
+      </tr>
+      <tr>
+          <th>Stock</th>
+          <td><input type="text" id="stock" name="stock"></td>
+      </tr>
+      <tr>
+          <th>In price</th>
+          <td><input type="text" id="inPrice" name="inPrice"></td>
+      </tr>
+      <tr>
+          <th>Out price</th>
+          <td><input type="text" id="outPrice" name="outPrice"></td>
+      </tr>
+  </table>
+  <button type="button" id="register">Register</button>
+  <script>
+    window.onload = function (){
+      $.post("getRegisterId",{},
+        function(data,status){
+          $("#id").html(data.ID);
+        }
+      );
+    }
+    $("#register").click(function(){
+      $.post("register",{
+        id: $("#id").html(),
+        name: $("#name").val(),
+        stock: $("#stock").val(),
+        inPrice: $("#inPrice").val(),
+        outPrice: $("#outPrice").val()
+      },
+      function(data,status){
+        alert(data);
+        if(status == 'success'){
+          $.post("getRegisterId",{},
+            function(data,status){
+              $("#id").html(data.ID);
+            }
+          );
+          $("#name").val('');
+          $("#stock").val('');
+          $("#inPrice").val('');
+          $("#outPrice").val('');
+        }
+      })
+    });
+  </script>
+</body>
+</html>
