@@ -1,6 +1,6 @@
 const Product = require('../models/product.model');
 
-exports.search = function(req,res){
+exports.search = (req,res) => {
 	var id = req.body.productID;
 	if(id){
 		Product.find({'id':id},(err,data) => {
@@ -19,7 +19,7 @@ exports.search = function(req,res){
 	}
 }
 
-exports.register = function(req,res){
+exports.register = (req,res) => {
 	var id = req.body.id;
 	var name = req.body.name;
 	var stock = req.body.stock;
@@ -44,7 +44,7 @@ exports.register = function(req,res){
 	});
 }
 
-exports.update = function(req,res){
+exports.update = (req,res) => {
 	var id = req.body.id;
 	var name = req.body.name;
 	var stock = req.body.stock;
@@ -72,7 +72,23 @@ exports.update = function(req,res){
 	}
 }
 
-exports.getRegisterId = function(req,res){
+exports.delete = (req,res) => {
+	var id = req.body.id;
+	if(id){
+		Product.findOneAndDelete({'id':id},
+			(err,doc) =>{
+				if(err){
+					console.log(err);
+					return res.send(500,{error:err});
+				}
+				else{
+					return res.status(200).send('Deleted.');
+			}
+		});
+	}
+}
+
+exports.getRegisterId = (req,res) => {
 	Product.find({},{'id':1,'_id':0}).sort({'id':1}).exec((err,data)=>{
 		if(err){
 			console.log(err);
