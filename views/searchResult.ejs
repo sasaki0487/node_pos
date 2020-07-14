@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/frontend.js"></script>
 </head>
 <body>
   <h1>Search Result</h1>
@@ -30,7 +30,7 @@
   <button type="button" id="update">Update</button>
   <button type="button" id="delete">Delete</button>
   <script>
-    $("#update").click(function(){
+    /*$("#update").click(function(){
       $.post("update",{
         id: $("#id").html(),
         name: $("#name").val(),
@@ -52,7 +52,33 @@
           window.location.href='/search';
         }
       })
-    });
+    });*/
+    document.querySelector('#update').onclick = function(){
+      var data = {
+        id: document.querySelector("#id").innerHTML,
+        name: document.querySelector("#name").value,
+        stock: document.querySelector("#stock").value,
+        inPrice: document.querySelector("#inPrice").value,
+        outPrice: document.querySelector("#outPrice").value
+      };
+      postData('update',data)
+      .then(data => {
+        alert(data.body.res);
+      })
+
+    }
+    document.querySelector('#delete').onclick = function(){
+      postData('/delete', {id:document.querySelector('#id').innerHTML})
+      .then(data => {
+        if(data.status == '200'){
+          alert(data.body.res);
+          window.location.href='/search';
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
+    }
   </script>
 </body>
 </html>

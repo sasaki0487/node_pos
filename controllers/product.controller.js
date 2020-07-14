@@ -39,7 +39,7 @@ exports.register = (req,res) => {
 			return res.status(500).send({error:err});
 		}
 		else{
-			return res.status(200).send('Registered.');
+			return res.status(200).send({'res':'Registered.'});
 		}
 	});
 }
@@ -66,7 +66,7 @@ exports.update = (req,res) => {
 				return res.send(500,{error:err});
 			}
 			else{
-				return res.status(200).send('Updated.');
+				return res.status(200).send({'res':'Updated.'});
 			}
 		});
 	}
@@ -82,7 +82,7 @@ exports.delete = (req,res) => {
 					return res.send(500,{error:err});
 				}
 				else{
-					return res.status(200).send('Deleted.');
+					return res.status(200).send({'res':'Deleted.'});
 			}
 		});
 	}

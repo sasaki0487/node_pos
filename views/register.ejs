@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/frontend.js"></script>
 </head>
 <body>
   <h1>Register</h1>
@@ -29,36 +29,46 @@
   </table>
   <button type="button" id="register">Register</button>
   <script>
-    window.onload = function (){
-      $.post("getRegisterId",{},
-        function(data,status){
-          $("#id").html(data.ID);
-        }
-      );
+    window.onload = function(){
+      postData('/getRegisterId', {})
+      .then(data => {
+        document.querySelector("#id").innerHTML = data.body.ID;
+      })
+      .catch(error => {
+        alert(error);
+      });
     }
-    $("#register").click(function(){
-      $.post("register",{
-        id: $("#id").html(),
-        name: $("#name").val(),
-        stock: $("#stock").val(),
-        inPrice: $("#inPrice").val(),
-        outPrice: $("#outPrice").val()
-      },
-      function(data,status){
-        alert(data);
-        if(status == 'success'){
-          $.post("getRegisterId",{},
-            function(data,status){
-              $("#id").html(data.ID);
-            }
-          );
-          $("#name").val('');
-          $("#stock").val('');
-          $("#inPrice").val('');
-          $("#outPrice").val('');
+    
+    document.querySelector('#register').onclick = function(){
+      var data = {
+        id: document.querySelector("#id").innerHTML,
+        name: document.querySelector("#name").value,
+        stock: document.querySelector("#stock").value,
+        inPrice: document.querySelector("#inPrice").value,
+        outPrice: document.querySelector("#outPrice").value
+      };
+
+      postData('/register', data)
+      .then(data => {
+        alert(data.body.res);
+        if(data.status == '200'){
+          postData('/getRegisterId',{})
+          .then(data => {
+            document.querySelector("#id").innerHTML = data.body.ID;
+          })
+          .catch(error => {
+            alert(error);
+          });
+          document.querySelector("#name").value = '';
+          document.querySelector("#stock").value = '';
+          document.querySelector("#inPrice").value = '';
+          document.querySelector("#outPrice").value = '';
         }
       })
-    });
+      .catch(error => {
+        alert(error);
+      });
+    };
   </script>
 </body>
 </html>
