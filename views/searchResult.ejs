@@ -30,54 +30,11 @@
   <button type="button" id="update">Update</button>
   <button type="button" id="delete">Delete</button>
   <script>
-    /*$("#update").click(function(){
-      $.post("update",{
-        id: $("#id").html(),
-        name: $("#name").val(),
-        stock: $("#stock").val(),
-        inPrice: $("#inPrice").val(),
-        outPrice: $("#outPrice").val()
-      },
-      function(data,status){
-        alert(data);
-      })
-    });
-    $("#delete").click(function(){
-      $.post("delete",{
-        id: $("#id").html(),
-      },
-      function(data,status){
-        if(status == 'success'){
-          alert(data);
-          window.location.href='/search';
-        }
-      })
-    });*/
     document.querySelector('#update').onclick = function(){
-      var data = {
-        id: document.querySelector("#id").innerHTML,
-        name: document.querySelector("#name").value,
-        stock: document.querySelector("#stock").value,
-        inPrice: document.querySelector("#inPrice").value,
-        outPrice: document.querySelector("#outPrice").value
-      };
-      postData('update',data)
-      .then(data => {
-        alert(data.body.res);
-      })
-
+      update();
     }
     document.querySelector('#delete').onclick = function(){
-      postData('/delete', {id:document.querySelector('#id').innerHTML})
-      .then(data => {
-        if(data.status == '200'){
-          alert(data.body.res);
-          window.location.href='/search';
-        }
-      })
-      .catch(error => {
-        alert(error);
-      });
+      remove();
     }
   </script>
 </body>

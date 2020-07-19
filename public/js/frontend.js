@@ -12,3 +12,71 @@ function postData(url, data) {
   })
   .then(response => response.json().then(data => ({status: response.status, body: data})));
 }
+
+function getRegisterId(){
+  postData('/getRegisterId', {})
+  .then(data => {
+    document.querySelector("#id").innerHTML = data.body.ID;
+  })
+  .catch(error => {
+    alert(error);
+  });
+}
+
+function register(){
+  var data = {
+        id: document.querySelector("#id").innerHTML,
+        name: document.querySelector("#name").value,
+        stock: document.querySelector("#stock").value,
+        inPrice: document.querySelector("#inPrice").value,
+        outPrice: document.querySelector("#outPrice").value
+      };
+
+      postData('/register', data)
+      .then(data => {
+        alert(data.body.res);
+        if(data.status == '200'){
+          postData('/getRegisterId',{})
+          .then(data => {
+            document.querySelector("#id").innerHTML = data.body.ID;
+          })
+          .catch(error => {
+            alert(error);
+          });
+          document.querySelector("#name").value = '';
+          document.querySelector("#stock").value = '';
+          document.querySelector("#inPrice").value = '';
+          document.querySelector("#outPrice").value = '';
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
+}
+
+function update(){
+  var data = {
+    id: document.querySelector("#id").innerHTML,
+    name: document.querySelector("#name").value,
+    stock: document.querySelector("#stock").value,
+    inPrice: document.querySelector("#inPrice").value,
+    outPrice: document.querySelector("#outPrice").value
+  };
+  postData('update',data)
+  .then(data => {
+    alert(data.body.res);
+  })
+}
+
+function remove(){
+  postData('/delete', {id:document.querySelector('#id').innerHTML})
+  .then(data => {
+    if(data.status == '200'){
+      alert(data.body.res);
+      window.location.href='/search';
+    }
+  })
+  .catch(error => {
+    alert(error);
+  });
+}

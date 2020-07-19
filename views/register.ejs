@@ -30,44 +30,11 @@
   <button type="button" id="register">Register</button>
   <script>
     window.onload = function(){
-      postData('/getRegisterId', {})
-      .then(data => {
-        document.querySelector("#id").innerHTML = data.body.ID;
-      })
-      .catch(error => {
-        alert(error);
-      });
+      getRegisterId();
     }
     
     document.querySelector('#register').onclick = function(){
-      var data = {
-        id: document.querySelector("#id").innerHTML,
-        name: document.querySelector("#name").value,
-        stock: document.querySelector("#stock").value,
-        inPrice: document.querySelector("#inPrice").value,
-        outPrice: document.querySelector("#outPrice").value
-      };
-
-      postData('/register', data)
-      .then(data => {
-        alert(data.body.res);
-        if(data.status == '200'){
-          postData('/getRegisterId',{})
-          .then(data => {
-            document.querySelector("#id").innerHTML = data.body.ID;
-          })
-          .catch(error => {
-            alert(error);
-          });
-          document.querySelector("#name").value = '';
-          document.querySelector("#stock").value = '';
-          document.querySelector("#inPrice").value = '';
-          document.querySelector("#outPrice").value = '';
-        }
-      })
-      .catch(error => {
-        alert(error);
-      });
+      register();
     };
   </script>
 </body>
