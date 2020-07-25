@@ -80,3 +80,26 @@ function remove(){
     alert(error);
   });
 }
+
+function login(){
+  postData('/auth',{
+    username: document.querySelector("input[name='username']").value,
+    password: document.querySelector("input[name='password']").value
+  })
+  .then(data => {
+    if(data.status == '200'){
+      window.location.href = "/";
+    }
+    else if(data.status == '400'){
+      document.querySelector('#status').value = data.body.res;
+    }
+    else if(data.status == '401'){
+      document.querySelector('#status').value = data.body.res;
+    }
+  })
+  .catch(error =>{
+    alert(error);
+  });
+
+}
+

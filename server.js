@@ -34,6 +34,9 @@ app.get('/register', (req,res) =>{
 app.get('/search', (req,res) =>{
 	res.render('search');
 });
+app.get('/trade', (req,res) =>{
+	res.render('trade');
+});
 app.get('/login', (req,res) => {
 	if(req.session.loggedin) {
 		res.redirect('/');

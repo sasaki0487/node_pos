@@ -4,23 +4,21 @@ exports.auth = function(req,res){
 	var user = req.body.username;
 	var pass = req.body.password;
 	if(user && pass){
-		Account.count({'username': user,'password': pass},(err, count) => {
+		Account.countDocuments({'username': user,'password': pass},(err, count) => {
 			if(err){
-				return res.send('401');
+				return res.status(401).send({'res':''});
 			}
 			else if(count == 1){
 				req.session.loggedin = true;
 				req.session.username = user;
-				return res.send('200');
+				return res.status(200).send({'res':''});
 			}
 			else{
-				return res.send('400');
+				return res.status(400).send({'res':'Wrong ID or Password!'});
 			}
-			res.end();
 		});
 	}
 	else{
-		res.send('Please enter Username and Password');
-		res.end();
+		 return res.status(400).send({'res':'Please enter Username and Password'});
 	}
 }

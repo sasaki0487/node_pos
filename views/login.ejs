@@ -34,7 +34,7 @@
 			color: #ffffff;
 		}
 		</style>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/frontend.js"></script>
 	</head>
 	<body>
 		<div class="login-form">
@@ -42,33 +42,18 @@
 			<p id="status"></p>
 			<input type="text" name="username" placeholder="Username" required>
 			<input type="password" name="password" placeholder="Password" required>
-			<input type="submit">
+			<input type="submit" id="submit">
 		</div>
 		<script>
-			$("input[type=submit]").click(function(){
-		        $.ajax({
-		          url: "/auth",
-		          type: "POST",
-		          data: {
-		              username: $("input[type=text]").val(),
-		              password: $("input[type=password]").val()
-		          },
-		          success: function(data){
-		          	if(data == "200"){
-		          		window.location.href = "/";
-		          	}
-		          	else if(data == "400"){
-		          		$("#status").text("Wrong ID or Password!");
-		          	}
-		          	else if(data == "401"){
-		          		$("#status").text("Database Error!");
-		          	}
-		          },
-		          error: function(){
-		            alert('Server Error');
-		          }
-		      });
-		    });
+			document.querySelector("#submit").onclick = function(){
+				login();
+			}
+			document.querySelector("input[name='password']").addEventListener("keyup", function(event) {
+				if (event.keyCode === 13) {
+					event.preventDefault();
+					document.querySelector("#submit").click();
+				}
+			});
 		</script>
 	</body>
 	
