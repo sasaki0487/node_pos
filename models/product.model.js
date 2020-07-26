@@ -6,7 +6,8 @@ let productSchema = new schema({
 	name: {type: String, required: true},
 	stock: {type: Number, required: true},
 	inPrice: {type: Number, required: true},
-	outPrice: {type: Number, required: true}
+	outPrice: {type: Number, required: true},
+	company: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Product', productSchema);

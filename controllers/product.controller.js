@@ -50,6 +50,7 @@ exports.update = (req,res) => {
 	var stock = req.body.stock;
 	var inPrice = req.body.inPrice;
 	var outPrice = req.body.outPrice;
+	var company = req.body.company;
 	if(id){
 		Product.findOneAndUpdate({'id':id},
 		{
@@ -57,7 +58,8 @@ exports.update = (req,res) => {
 			'name':name,
 			'stock':stock,
 			'inPrice':inPrice,
-			'outPrice':outPrice
+			'outPrice':outPrice,
+			'company':company
 		},
 		{upsert:true},
 		(err,doc) =>{

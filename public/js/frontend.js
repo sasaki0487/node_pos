@@ -29,7 +29,8 @@ function register(){
         name: document.querySelector("#name").value,
         stock: document.querySelector("#stock").value,
         inPrice: document.querySelector("#inPrice").value,
-        outPrice: document.querySelector("#outPrice").value
+        outPrice: document.querySelector("#outPrice").value,
+        company: document.querySelector("#company").value
       };
 
       postData('/register', data)
@@ -47,6 +48,7 @@ function register(){
           document.querySelector("#stock").value = '';
           document.querySelector("#inPrice").value = '';
           document.querySelector("#outPrice").value = '';
+          document.querySelector("#company").value = '';
         }
       })
       .catch(error => {
@@ -60,7 +62,8 @@ function update(){
     name: document.querySelector("#name").value,
     stock: document.querySelector("#stock").value,
     inPrice: document.querySelector("#inPrice").value,
-    outPrice: document.querySelector("#outPrice").value
+    outPrice: document.querySelector("#outPrice").value,
+    company: document.querySelector("#company").value
   };
   postData('update',data)
   .then(data => {
