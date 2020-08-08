@@ -1,47 +1,178 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Search</title>
-		<style>
-		.search-form {
-			width: 300px;
-			margin: 0 auto;
-			font-family: Tahoma, Geneva, sans-serif;
-		}
-		.search-form h1 {
-			text-align: center;
-			color: #4d4d4d;
-			font-size: 24px;
-			padding: 20px 0 20px 0;
-		}
-		.search-form input[type="text"] {
-			width: 100%;
-			padding: 15px;
-			border: 1px solid #dddddd;
-			margin-bottom: 15px;
-			box-sizing:border-box;
-		}
-		.search-form input[type="submit"] {
-			width: 100%;
-			padding: 15px;
-			background-color: #535b63;
-			border: 0;
-			box-sizing: border-box;
-			cursor: pointer;
-			font-weight: bold;
-			color: #ffffff;
-		}
-		</style>
-	</head>
-	<body>
-		<div class="search-form">
-			<h1>Search</h1>
-			<form action="search" method="POST">
-				<input type="text" name="productID" placeholder="Enter product ID" required>
-				<input type="submit">
-			</form>
-		</div>
-	</body>
-	
+    <head>
+        <meta charset="utf-8" />
+        <title>Search</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+            integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
+            crossorigin="anonymous"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <script type="text/javascript" src="/js/frontend.js"></script>
+    </head>
+    <body>
+        <div id="app" class="search-form">
+            <h1>Search</h1>
+            <input type="text" v-model="id" />
+            <button class="btn btn-primary" v-on:click="getSingleProduct">
+                Search
+            </button>
+            <list-com
+                v-if="showList"
+                v-bind:products="products"
+                v-bind:id="id"
+            ></list-com>
+            <edit-com
+                v-if="!showList"
+                v-bind:product="singleProduct"
+            ></edit-com>
+        </div>
+        <script>
+            var listCom = {
+                template: `<div>
+                        <table class="table">
+                        <tr v-for="product in products">
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    v-on:click="pSearch(product.id)"
+                                >
+                                    Edit
+                                </button>
+                            </td>
+                            <td
+                                v-for="(value,key) in product"
+                                v-if="key != '__v' && key != '_id'"
+                            >
+                                {{ value }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>`,
+                props: {
+                    products: Array,
+                },
+                methods: {
+                    pSearch(id) {
+                        axios
+                            .post('/search', { id: id })
+                            .then((res) => {
+                                if (res.data.stat == '200')
+                                    this.$root.singleProduct = res.data.res
+                            })
+                            .catch((err) => {})
+                        this.$root.showList = false
+                    },
+                },
+            }
+
+            var editCom = {
+                template: `<div><h3>Edit</h3>
+                <table class="table">
+                    <tr v-for="(value,key) in product[0]" v-if="key != '__v' && key != '_id'">
+                        <td style="width: 10%">{{key}} : </td>
+                        <td><input type="text" v-bind:value="value" v-on:change="product[0][key] = $event.target.value"></input> </td>
+                    </tr>
+                </table>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="bUpdate"
+                >
+                    Update
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="bDelete"
+                >
+                    Delete
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="bBack"
+                >
+                    Back
+                </button>
+                </div>`,
+                props: {
+                    product: Array,
+                },
+                methods: {
+                    bBack: function () {
+                        this.$root.showList = true
+                        this.$root.singleProduct = []
+                    },
+                    bUpdate: function () {
+                        axios
+                            .post('/update', { data: this.product[0] })
+                            .then((res) => {
+                                if (res.data.stat == '200') {
+                                    alert(res.data.res)
+                                }
+                            })
+                            .catch((err) => {})
+                        this.$root.getAllProduct()
+                        this.$root.showList = true
+                    },
+                    bDelete: function () {
+                        axios
+                            .post('/delete', { id: this.product[0].id })
+                            .then((res) => {
+                                if (res.data.stat == '200') {
+                                    alert(res.data.res)
+                                }
+                            })
+                            .catch((err) => {})
+                        this.$root.getAllProduct()
+                        this.$root.showList = true
+                    },
+                },
+            }
+
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    products: [],
+                    showList: true,
+                    id: '',
+                    singleProduct: [],
+                },
+                components: {
+                    'list-com': listCom,
+                    'edit-com': editCom,
+                },
+                methods: {
+                    getSingleProduct: function () {
+                        this.showList = false
+                        axios
+                            .post('/search', { id: this.id })
+                            .then((res) => {
+                                if (res.data.stat == '200')
+                                    this.singleProduct = res.data.res
+                            })
+                            .catch((err) => {})
+                    },
+                    getAllProduct: function () {
+                        axios
+                            .post('/searchAll', {})
+                            .then((res) => {
+                                this.products = res.data.res
+                            })
+                            .catch((err) => {})
+                    },
+                },
+                mounted: function () {
+                    this.$nextTick(function () {
+                        this.getAllProduct()
+                    })
+                },
+            })
+        </script>
+    </body>
 </html>
