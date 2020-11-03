@@ -1,9 +1,12 @@
-const mongoose = require('mongoose');
-const schema = mongoose.Schema;
+var db = require('./query')
 
-let accountSchema = new schema({
-	username: {type: String, required: true},
-	password: {type: String, required: true}
-});
-
-module.exports = mongoose.model('Account', accountSchema);
+module.exports = {
+    auth: (user, pass, res) => {
+        const queryObj = {
+            text:
+                'SELECT COUNT(*) as num FROM account WHERE username = $1 AND password = $2',
+            values: [user, pass],
+        }
+        db.query(queryObj, res)
+    },
+}

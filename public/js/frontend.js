@@ -92,12 +92,13 @@ function login() {
         password: document.querySelector("input[name='password']").value,
     })
         .then((data) => {
+            console.log(data.body.res)
             if (data.status == '200') {
                 window.location.href = '/'
             } else if (data.status == '400') {
-                document.querySelector('#status').value = data.body.res
+                document.querySelector('p#status').textContent = data.body.res
             } else if (data.status == '401') {
-                document.querySelector('#status').value = data.body.res
+                document.querySelector('p#status').textContent = data.body.res
             }
         })
         .catch((error) => {
